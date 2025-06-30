@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import {HiBars3BottomRight, HiOutLineUser,HiOutlineShoppingBag } from 'react-icons/hi2';
+import {HiBars3BottomRight,HiOutlineUser,HiOutlineShoppingBag } from 'react-icons/hi2';
 import SearchBar from './SearchBar';
 import CartDrawer from '../Layouts/CartDrawer';
 import { useState } from 'react';
@@ -45,9 +45,9 @@ export default function Navbar() {
             )}
               
             <Link to="/profile" className='text-gray-700 hover:text-black'>
-            <HiOutLineUser className='h-6 w-6 text-gray-500' />
+            <HiOutlineUser className='h-6 w-6 text-gray-500' />
             </Link>
-            <Button onClick ={toggleDrawer}
+            <button onClick ={toggleDrawer}
             to="" className='relative text-gray-700 hover:text-black'>
 
             <HiOutlineShoppingBag className='h-6 w-6 text-gray-500' />
@@ -57,7 +57,7 @@ export default function Navbar() {
             </span>
             )}
             
-            </Button>
+            </button>
             {/* Search Bar */} 
             <div className='overflow-hidden'>
             <SearchBar/>

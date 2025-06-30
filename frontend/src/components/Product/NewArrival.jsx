@@ -117,8 +117,7 @@ const container =scrollRef.current;
         onMouseUp={handleMouseLeave}
         onMouseLeave={handleMouseLeave}
     className= {`container mx-auto overflow-x-scroll flex space-x-6 relative ${isDragging ? "curser-grabbing" :"cursor-grab"}`}>
-        {
-            newArivalsItems.map((product ) => (
+        {newArrivals.map((product ) => (
              <div key={product._id} className='min-w-[100%] sm:min-w-[50%] lg:min-w-[30%] relative'>
                 <img
                 src={product.image[0]?.url} 

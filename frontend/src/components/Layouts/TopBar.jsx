@@ -1,8 +1,8 @@
 import React from 'react'
 import {Link } from "react-router-dom";
-import {TbBrandMetadata} from "react-icons/tb";
+import { TbBrandMeta} from "react-icons/tb";
 import {IoLogoInstagram} from "react-icons/io";
-import {RiTwitterXLine} from "react-icons/Ri"
+import {RiTwitterXLine} from "react-icons/ri";
 
 export default function TopBar() {
   return (
@@ -10,7 +10,7 @@ export default function TopBar() {
       <div className='container mx-auto flex justify-center items-center px-3 py-3'>
         <div className='hidden md:flex items-center space-x-2'>
           <Link to=''className='hover:text-gray-500'>
-    <TbBrandMetadata className='h-5 w-5'/>
+    < TbBrandMeta className='h-5 w-5'/>
           </Link>
           <Link to=''className='hover:text-gray-500'>
     <IoLogoInstagram className='h-5 w-5'/>

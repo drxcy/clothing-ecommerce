@@ -1,6 +1,5 @@
 import React from 'react'
-import Link from 'react-router-dom';
-
+import {Link} from 'react-router-dom';
 export default function ProductGrid({products,loading,error}) {
   if(loading){
     return

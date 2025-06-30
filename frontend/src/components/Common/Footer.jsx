@@ -1,6 +1,8 @@
 import React from 'react'
+import { FiPhoneCall } from 'react-icons/fi'
 import { IoLogoInstagram } from 'react-icons/io'
 import { RiTwitterLine, RiTwitterXLine } from 'react-icons/ri'
+import { TbBrandMeta } from 'react-icons/tb'
 import { Link } from 'react-router-dom'
 
 export default function Footer() {

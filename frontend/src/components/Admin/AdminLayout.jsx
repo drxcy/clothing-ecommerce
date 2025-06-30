@@ -4,7 +4,7 @@ import AdminSidebar from './AdminSidebar';
 import { Outlet } from 'react-router-dom';
 
 export default function AdminLayout() {
-    const [isSidebarOpen setIsSidebarOpen] = useState(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const toogleSidebar = () => 
     {
         setIsSidebarOpen(!isSidebarOpen)

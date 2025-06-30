@@ -1,19 +1,26 @@
 import React from 'react'
 import { useState } from 'react'
 import register from '../assets/register.webp'
-import {registerUser} from "../redux/slices/authSlice.js";
+import {registerUser} from "../../redux/slices/authSlice.js";
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { mergeCart } from '../../redux/slices/cartSlice.js';
 import { loginUser } from '../../redux/slices/authSlice.js';
- const dispatch = useDispatch();
-    const navigate =useNavigate();
+ 
+   
+    
+export default function Register() {
+    const [name ,setName] =useState("")
+    const [password ,setPassword] =useState("")
+    const [email ,setEmail] = useState("")
+    const dispatch = useDispatch();
+     const navigate =useNavigate();
     const location = useLocation();
     const {user,guestId,loading} = useSelector((state)=> state.auth);
     const {cart} = useSelector((state)=>state.cart);
     // Get redirect parameter and check if its checkout or something
-    const redirect = new URLSearchParams(location.search).get("redirect") | "/";
+    const redirect = new URLSearchParams(location.search).get("redirect") || "/";
     const isCheckoutRedirect = redirect.includes("checkout");
     useEffect(() =>
     {
@@ -31,21 +38,11 @@ import { loginUser } from '../../redux/slices/authSlice.js';
         }
     }
     },[user,guestId,cart,navigate,isCheckoutRedirect,dispatch]);
-    const handleSubmit = (e) =>
-    {
-        e.preventDefault();
-      dispatch(registerUser({name,email,password}));
-    }
-export default function Register() {
-    const [name ,setName] =useState("")
-    const [password ,setPassword] =useState("")
-    const [email ,setEmail] = useState("")
-    const dispatch = useDispatch();
 
     const handleSubmit = (e) =>
     {
         e.preventDefault();
-        dispatch(registerUser({name,email,password}));
+      dispatch(registerUser({name,email,password}));
     }
   return (
     <div className='flex'>

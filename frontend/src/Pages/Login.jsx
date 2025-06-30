@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import login from '../assets/login.webp'
@@ -15,7 +15,7 @@ export default function Login() {
     const {user,guestId,loading} = useSelector((state)=> state.auth);
     const {cart} = useSelector((state)=>state.cart);
     // Get redirect parameter and check if its checkout or something
-    const redirect = new URLSearchParams(location.search).get("redirect") | "/";
+    const redirect = new URLSearchParams(location.search).get("redirect") || "/";
     const isCheckoutRedirect = redirect.includes("checkout");
     useEffect(() =>
     {

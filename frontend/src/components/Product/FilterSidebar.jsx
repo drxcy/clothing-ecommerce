@@ -108,7 +108,7 @@ export default function FilterSidebar() {
     const handlePriceChange = (e) =>
     {
             const newPrice = e.target.value;
-            setPriceRange = ([0 ,newPrice])
+            setPriceRange= ([0,newPrice])
             const newFilters = {...filters, minPrice :0 ,maxPrice:newPrice}
             setFilters(filters);
             updatedURLParams(newFilters);

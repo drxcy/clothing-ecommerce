@@ -1,4 +1,5 @@
 import React from 'react'
+import { HiArrowPathRoundedSquare, HiOutlineCreditCard, HiShoppingBag } from 'react-icons/hi2'
 
 export default function FeaturedSection() {
   return (
