@@ -1,11 +1,52 @@
 import React from 'react'
 import { useState } from 'react'
 import register from '../assets/register.webp'
-
+import {registerUser} from "../redux/slices/authSlice.js";
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { mergeCart } from '../../redux/slices/cartSlice.js';
+import { loginUser } from '../../redux/slices/authSlice.js';
+ const dispatch = useDispatch();
+    const navigate =useNavigate();
+    const location = useLocation();
+    const {user,guestId,loading} = useSelector((state)=> state.auth);
+    const {cart} = useSelector((state)=>state.cart);
+    // Get redirect parameter and check if its checkout or something
+    const redirect = new URLSearchParams(location.search).get("redirect") | "/";
+    const isCheckoutRedirect = redirect.includes("checkout");
+    useEffect(() =>
+    {
+        if(user)
+        {
+            if(cart?.products.length > 0 && guestId)
+                {
+                dispatch(mergeCart({guestId,user})).then(()=>
+                {
+                    navigate(isCheckoutRedirect ? "/checkout" :"/");
+                });
+        }
+        else {
+            navigate(isCheckoutRedirect ? "/checkout" :"/");
+        }
+    }
+    },[user,guestId,cart,navigate,isCheckoutRedirect,dispatch]);
+    const handleSubmit = (e) =>
+    {
+        e.preventDefault();
+      dispatch(registerUser({name,email,password}));
+    }
 export default function Register() {
     const [name ,setName] =useState("")
     const [password ,setPassword] =useState("")
     const [email ,setEmail] = useState("")
+    const dispatch = useDispatch();
+
+    const handleSubmit = (e) =>
+    {
+        e.preventDefault();
+        dispatch(registerUser({name,email,password}));
+    }
   return (
     <div className='flex'>
         <div className='w-full md:w-1/2 flex flex-col justify-center items-center p-8 md:p-12'>
@@ -54,13 +95,11 @@ export default function Register() {
 
         type='submit'
         className='w-full bg-black text-white p-2 rounded-lg font-semibold hover:bg-gray-800
-            transition'
-                
-                >
-                Sign Up
+            transition'>
+               {loading?"loading": "Sign Up"}
             </button>
 <p className='mt-6 text-center text-sm'>You Have Account  {" "} </p>
-<Link to ='/login' className='text-blue-600'>
+<Link to ={`/login?redirect=${encodeURIComponent}`} className='text-blue-600'>
 Login
 </Link>
 

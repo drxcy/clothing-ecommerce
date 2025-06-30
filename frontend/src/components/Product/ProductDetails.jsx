@@ -1,14 +1,31 @@
 import React, { useEffect, useState } from 'react'
 import {Toaster} from "sooner";
 import ProductGrid from './ProductGrid';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProductDetails, fetchSimilarProducts } from '../../../redux/slices/productsSlice';
+import { addToCart } from '../../../redux/slices/cartSlice';
 
 
-export default function ProductDetails() {
+export default function ProductDetails({productId}) {
+    const {id} =useParams();
+    const dispatch =useDispatch();
+    const {selectedProduct,loading,error,simliarProducts} = useSelector((state)=>state.products);
+    const {user,guestId} =useSelector((state)=>state.auth);
     const [mainimage ,setMainImage] = useState("")
     const [selectedsize ,setSelectedSize] =useState("");
     const [selectedcolor ,setSelectedColor] =useState("");
     const[quantity ,setQuantity] =useState(1);
-    const [isbuttondisabled ,setisButtonDisables] = useState("")
+    const [isbuttondisabled ,setIsButtonDisabled] = useState("")
+    const productFetchId =productId || id;
+    useEffect (()=>
+    {
+        if(productFetchId)
+        {
+            dispatch(fetchProductDetails(productFetchId));
+            dispatch(fetchSimilarProducts({id:productFetchId}));
+        }
+    },[dispatch],productFetchId);
 
     useEffect (() =>   
     {
@@ -34,18 +51,37 @@ if(selectedProduct?.images?.length > 0)
             );
             return ;
         }
-        setisButtonDisables(true)
-        setTimeout(() =>
-        {
-            toast.succes("Add Product To Cart")
-            ,{
-                duration :1000,
-            }
-        }, 500)
-        setisButtonDisables(false)
+        setIsButtonDisabled(true)
+       dispatch(addToCart({productId:productFetchId,
+        quantity,
+        size:selectedsize,
+        color:selectedcolor,
+        guestId,
+        userId:user?._id,
+       })).then(()=>
+    {
+        toast.success("Product added to a cart!",{
+            duration:1000,
+        });
+    })
+    .finally(()=>
+    {
+        setIsButtonDisabled(false);
+    })
+    }
+    if(loading)
+    {
+        return 
+        <p> Loading...</p>
+    }
+    if(error)
+    {
+        return
+        <p>Error :{error}</p>
     }
   return (
     <div className='p-6'>
+        {selectedProduct && (
         <div className='max-w-6xl mx-auto bg-white p-8 rounded-lg'> 
             <div className='flex flex-col md:flex-row'>
                 {/* Left Thumbnail */}
@@ -175,9 +211,10 @@ if(selectedProduct?.images?.length > 0)
             </div>
             <div className='mt-20'> 
                 <h2 className='text-2xl text-center font-medium mb-4 '>You May Also Like </h2>
-                <ProductGrid products={simliarProducts}/>
+                <ProductGrid products={simliarProducts} loading={loading} error={error}/>
             </div>
         </div>
+        )}
     </div>
   )
 }

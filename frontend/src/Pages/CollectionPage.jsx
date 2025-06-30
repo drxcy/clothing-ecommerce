@@ -4,11 +4,22 @@ import FilterSidebar from '../components/Product/FilterSidebar';
 import { useRef } from 'react';
 import SortOption from '../components/Product/SortOption';
 import ProductGrid from '../components/Product/ProductGrid';
+import { useParams, useSearchParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProductsByFilters } from '../../redux/slices/productsSlice';
 
 export default function CollectionPage() {
-    const [products,setProducts] = useState([]);
+    const {collection} =useParams();
+    const [searchParams] =useSearchParams();
+    const dispatch =useDispatch();
+    const {products,error,loading} =useSelector((state)=>state.products)
+   const queryParams = Object.fromEntries([...searchParams]);
     const SidebarRef = useRef(null);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    useEffect(()=>
+    {
+        dispatch(fetchProductsByFilters({collection,...queryParams}))
+    },[dispatch,collection,searchParams])
     const toggleSidebar = () => 
         {
             setIsSidebarOpen(!isSidebarOpen)
@@ -25,13 +36,13 @@ export default function CollectionPage() {
         useEffect (() =>
         {
                 document.addEventListener("mousedown",handleClickOutside)
-                // Clean EventListner 
-                document.removeEventListener("mousedown",handleClickOutside)
-        })
-    useEffect (() =>
-    {
-        const fetchProducts = []
-    })
+                // Clean EventListner
+                return() =>
+                    {
+                        document.removeEventListener("mousedown",handleClickOutside)
+                    } 
+        },[])
+   
   return (
     <div className='flex flex-col lg:flex-row'>
         {/* Mobile Filter Button */}
@@ -50,7 +61,7 @@ export default function CollectionPage() {
             {/* Sort Option */}
             <SortOption/>
             {/* Product Grid */}
-            <ProductGrid products={products}/>
+            <ProductGrid products={products} loading={loading} error={error}/>
          </div>
 
     </div>

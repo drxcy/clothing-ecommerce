@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import {FiChevronLeft,FiChevronRight} from 'react-icons/fi'
 import { Link } from 'react-router-dom'
+import axios from 'axios';
 
 export default function NewArrival() {
     const scrollRef = useRef();
@@ -10,6 +11,24 @@ export default function NewArrival() {
 
     const [canscrollLeft ,setCanScrollLeft ] = useState(true);
     const [canscrollRight ,setCanScrollRight ] = useState(true);
+    const [newArrivals,setNewArrivals] = useState([]);
+    useEffect(() =>
+    {
+        const fetchNewArrivals = async() => {
+            try
+            {
+               const response =await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/products/new-arrivals`); 
+            setNewArrivals(response.data);
+            }
+            catch (error)
+            {
+                console.error(error);
+            }
+        }
+        fetchNewArrivals();
+    },[]
+    )
+
     const handleMouseDown= (e) =>
     {
 setIsDragging(true);
@@ -60,7 +79,7 @@ const container =scrollRef.current;
             UpdateScrollButtons();
             return ()  => container.removeEventListener("scroll",UpdateScrollButtons)
         }
-    },[]);
+    },[newArrivals]);
 
   return (
    <section  className='py-16 px-4 lg:px-0'>
